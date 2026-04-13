@@ -6,9 +6,8 @@ import os
 import matplotlib.pyplot as plt
 
 
-# =========================
+
 # CORE SIMULATION
-# =========================
 def simulate(policy, deck_type='infinite', num_games=100000):
     wins = 0
     losses = 0
@@ -48,9 +47,7 @@ def simulate(policy, deck_type='infinite', num_games=100000):
     }
 
 
-# =========================
 # UTIL
-# =========================
 def create_graphs_folder():
     if not os.path.exists("graphs"):
         os.makedirs("graphs")
@@ -69,9 +66,8 @@ def add_labels(bars):
         )
 
 
-# =========================
+
 # EV PLOT
-# =========================
 def plot_ev(results, deck_type):
     names = [name for name, _ in results]
     evs = [res["expected_value"] for _, res in results]
@@ -90,9 +86,7 @@ def plot_ev(results, deck_type):
     plt.close()
 
 
-# =========================
 # EV COMPARISON
-# =========================
 def plot_ev_comparison(results_inf, results_single, results_shoe):
     names = [name for name, _ in results_inf]
     x = range(len(names))
@@ -103,9 +97,27 @@ def plot_ev_comparison(results_inf, results_single, results_shoe):
 
     plt.figure()
 
-    plt.bar([i - 0.2 for i in x], ev_inf, width=0.2, label="Infinite")
-    plt.bar(x, ev_single, width=0.2, label="Single")
-    plt.bar([i + 0.2 for i in x], ev_shoe, width=0.2, label="Shoe")
+    # grouped bars
+    bars1 = plt.bar([i - 0.25 for i in x], ev_inf, width=0.25, label="Infinite Deck")
+    bars2 = plt.bar(x, ev_single, width=0.25, label="Single Deck")
+    bars3 = plt.bar([i + 0.25 for i in x], ev_shoe, width=0.25, label="Shoe Deck (6)")
+
+    # labels
+    def add_ev_labels(bars):
+        for bar in bars:
+            height = bar.get_height()
+            plt.text(
+                bar.get_x() + bar.get_width() / 2,
+                height,
+                f"{height:.3f}",
+                ha="center",
+                va="bottom",
+                fontsize=7
+            )
+
+    add_ev_labels(bars1)
+    add_ev_labels(bars2)
+    add_ev_labels(bars3)
 
     plt.xticks(list(x), names, rotation=30)
     plt.title("EV Comparison: Infinite vs Single vs Shoe Deck")
@@ -117,9 +129,7 @@ def plot_ev_comparison(results_inf, results_single, results_shoe):
     plt.close()
 
 
-# =========================
 # OUTCOME PER DECK
-# =========================
 def plot_outcome_per_deck(results, deck_type):
     names = [name for name, _ in results]
     x = range(len(names))
@@ -149,9 +159,7 @@ def plot_outcome_per_deck(results, deck_type):
     plt.close()
 
 
-# =========================
 # OUTCOME COMPARISON
-# =========================
 """"
 def plot_outcome_comparison(results_inf, results_single, results_shoe):
     names = [name for name, _ in results_inf]
@@ -172,7 +180,7 @@ def plot_outcome_comparison(results_inf, results_single, results_shoe):
                 fontsize=7
             )
 
-    # ================= WIN RATE =================
+    #  WIN RATE 
     plt.figure()
 
     bars1 = plt.bar([i - 0.25 for i in x], extract(results_inf, "win_rate"), width=0.2, label="Inf")
@@ -192,7 +200,7 @@ def plot_outcome_comparison(results_inf, results_single, results_shoe):
     plt.savefig("graphs/win_rate_comparison.png")
     plt.close()
 
-    # ================= LOSS RATE =================
+    # LOSS RATE 
     plt.figure()
 
     bars1 = plt.bar([i - 0.25 for i in x], extract(results_inf, "loss_rate"), width=0.2, label="Inf")
@@ -212,7 +220,7 @@ def plot_outcome_comparison(results_inf, results_single, results_shoe):
     plt.savefig("graphs/loss_rate_comparison.png")
     plt.close()
 
-    # ================= DRAW RATE =================
+    # DRAW RATE 
     plt.figure()
 
     bars1 = plt.bar([i - 0.25 for i in x], extract(results_inf, "draw_rate"), width=0.2, label="Inf")

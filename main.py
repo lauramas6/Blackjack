@@ -14,7 +14,7 @@ def main():
     }
 
     deck_types = ["infinite", "single", "shoe"]
-    num_games = 1000000  # reduce to 10000 first if testing graphs
+    num_games = 100  # reduce to 10000 first if testing graphs
 
     # 🔹 Store results for graphing
     results_inf = []
