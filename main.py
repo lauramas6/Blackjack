@@ -1,6 +1,6 @@
 # main.py
 
-from simulator import simulate
+from simulator import simulate, plot_ev, plot_ev_comparison, plot_outcome_per_deck, create_graphs_folder #plot_outcome_comparison
 from policies import policy_1, policy_2, policy_3, policy_4, policy_5
 
 
@@ -13,8 +13,13 @@ def main():
         "Policy 5 (dealer-aware)": policy_5
     }
 
-    deck_types = ["infinite", "single"]
-    num_games = 1000000  # increase to 500000 or 1M for final report
+    deck_types = ["infinite", "single", "shoe"]
+    num_games = 1000000  # reduce to 10000 first if testing graphs
+
+    # 🔹 Store results for graphing
+    results_inf = []
+    results_single = []
+    results_shoe = []
 
     for deck_type in deck_types:
         print("\n===================================")
@@ -36,6 +41,31 @@ def main():
             print("-----------------------------------")
 
         print("\nSummary complete for:", deck_type)
+
+        # 🔹 Save results for later graphing
+        if deck_type == "infinite":
+            results_inf = results_table
+        elif deck_type == "single":
+            results_single = results_table
+        elif deck_type == "shoe":
+            results_shoe = results_table    
+
+    # 🔹 Generate graphs AFTER simulations
+    create_graphs_folder()
+
+    plot_ev(results_inf, "infinite")
+    plot_ev(results_single, "single")
+    plot_ev(results_shoe, "shoe")
+
+    plot_ev_comparison(results_inf, results_single, results_shoe)
+
+    plot_outcome_per_deck(results_inf, "infinite")
+    plot_outcome_per_deck(results_single, "single")
+    plot_outcome_per_deck(results_shoe, "shoe")
+
+    #plot_outcome_comparison(results_inf, results_single, results_shoe)
+
+    print("\nGraphs saved in /graphs folder")
 
 
 if __name__ == "__main__":

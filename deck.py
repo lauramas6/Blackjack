@@ -14,6 +14,9 @@ class Deck:
         
         if self.deck_type == 'single':
             self.__init__single_deck()
+
+        elif self.deck_type == "shoe":
+            self.__init__shoe()
     
     def __init__single_deck(self):
         """
@@ -24,6 +27,15 @@ class Deck:
             10, J, Q, K = 10
         """
         self.cards = BASE_DECK * 4  # 4 suits
+        random.shuffle(self.cards)
+    
+    def __init__shoe(self):
+        """
+        Initialize and shuffle a shoe (can be multiple decks).
+        Default: 1 deck shoe (same as single but persistent).
+        """
+        num_decks = 6   # Change if desired
+        self.cards = BASE_DECK * 4 * num_decks
         random.shuffle(self.cards)
 
     def draw(self):
@@ -39,7 +51,11 @@ class Deck:
             if not self.cards:
                 self.__init__single_deck()
             return self.cards.pop()
+        elif self.deck_type == 'shoe':
+            if not self.cards:
+                self.__init__shoe()
+            return self.cards.pop()
         
         else:
-            raise ValueError("Invalid deck type. Use 'infinite' or 'single'.")
+            raise ValueError("Invalid deck type. Use 'infinite', 'single', or 'shoe'.")
             
