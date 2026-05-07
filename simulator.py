@@ -160,7 +160,6 @@ def plot_outcome_per_deck(results, deck_type):
 
 
 # OUTCOME COMPARISON
-""""
 def plot_outcome_comparison(results_inf, results_single, results_shoe):
     names = [name for name, _ in results_inf]
     x = range(len(names))
@@ -239,4 +238,3 @@ def plot_outcome_comparison(results_inf, results_single, results_shoe):
     plt.tight_layout()
     plt.savefig("graphs/draw_rate_comparison.png")
     plt.close()
-"""
