@@ -1,4 +1,4 @@
-# deck.py --> Supports Infinite Deck and Single Deck
+# deck.py --> Supports Infinite Deck, Single Deck, and Shoe Deck
 import random
 
 BASE_DECK = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
